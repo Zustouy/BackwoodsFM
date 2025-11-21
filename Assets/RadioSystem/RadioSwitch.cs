@@ -15,7 +15,6 @@ public class RadioSwitch : MonoBehaviour
 
     private Camera cam;
 
-    // Статическое событие, которое уведомляет все подписанные объекты
     public static event Action<float, float> OnFrequencyRangeChanged;
 
     void Start()
@@ -33,7 +32,6 @@ public class RadioSwitch : MonoBehaviour
                 {
                     changeFrequency = !changeFrequency;
                     clickSource.PlayOneShot(clickSound);
-                    // Триггерим событие: все подписанные объекты обновят диапазон
                     if (changeFrequency)
                         OnFrequencyRangeChanged?.Invoke(maxVHF, minVHF);
                     else
