@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Player))]
 [RequireComponent(typeof(CharacterController))]
 public class FPController : MonoBehaviour
 {
     [Header("References")]
     public Transform cameraTransform;
+    public Player player;
     CharacterController cc;
 
     [Header("Input System")]
@@ -71,6 +73,7 @@ public class FPController : MonoBehaviour
     void Awake()
     {
         cc = GetComponent<CharacterController>();
+        player =GetComponent<Player>();
         currentHeight = standingHeight;
         currentCenter = standingCenter;
 
@@ -95,6 +98,17 @@ public class FPController : MonoBehaviour
 
     void Update()
     {
+        // ВЗАИМОДЕЙСТВИЕ
+        if (interactAction.WasPerformedThisFrame())
+        {
+            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hit, interactDistance))
+            {
+                var actions = hit.collider.GetComponents<IAction>();
+                foreach (var action in actions)
+                    action.Interact();  
+            }
+        }
+
         if (toggleNoclipAction.WasPerformedThisFrame())
         {
             noclip = !noclip;
@@ -172,17 +186,6 @@ public class FPController : MonoBehaviour
         // ДВИЖЕНИЕ
         Vector3 total = moveVelocity + Vector3.up * verticalVelocity.y;
         cc.Move(total * Time.deltaTime);
-
-        // ВЗАИМОДЕЙСТВИЕ
-        if (interactAction.WasPerformedThisFrame())
-        {
-            if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hit, interactDistance))
-            {
-                var rb = hit.rigidbody;
-                if (rb != null && !rb.isKinematic)
-                    rb.AddForceAtPosition(cameraTransform.forward * interactImpulse, hit.point, ForceMode.Impulse);
-            }
-        }
     }
 
     void HandleCrouch()

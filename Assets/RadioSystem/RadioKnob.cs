@@ -18,6 +18,7 @@ public class RadioKnob : MonoBehaviour
     private float lastClickAngle = 0f;
     private Camera cam;
 
+
     void Start()
     {
         cam = Camera.main;
@@ -35,7 +36,9 @@ public class RadioKnob : MonoBehaviour
         }
 
         if (Input.GetMouseButtonUp(0))
+        {
             isDragging = false;
+        }
 
         // Поворот ручки
         if (isDragging)

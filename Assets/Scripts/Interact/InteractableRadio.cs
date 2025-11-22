@@ -1,31 +1,29 @@
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Events;
 public class InteractableRadio : MonoBehaviour, IAction
 {
-    public CinemachineCamera FPCinemachineCamera;
-    public CinemachineCamera RadioCinemachineCamera;
+    public UnityEvent interactEnterEvent;
+    public UnityEvent interactExitEvent;
+    public Player player;
     bool isSit = false;
-    private void Start()
+    void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.E)&& isSit)
+        {
+            interactExitEvent?.Invoke();
+            player.SetState(PlayerState.Standing);
+            isSit = false;
+        }
+
     }
     public void Interact()
     {
-        print("interact");
         if (!isSit)
         {
-            print("sit");
-            FPCinemachineCamera.Priority.Value = 0;
-            RadioCinemachineCamera.Priority.Value = 1;
+            interactEnterEvent?.Invoke();
+            player.SetState(PlayerState.Sitting);
             isSit = true;
         }
-        else
-        {
-            print("up");
-            FPCinemachineCamera.Priority.Value = 1;
-            RadioCinemachineCamera.Priority.Value = 0;
-            isSit = false;
-        }
     }
-
 }
