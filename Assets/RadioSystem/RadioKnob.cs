@@ -21,7 +21,6 @@ public class RadioKnob : MonoBehaviour, IDraggable
     private float targetAngle = 0f;
     private float lastClickAngle = 0f;
     private Camera cam;
-
     private System.Reflection.FieldInfo tunerAngleField;
 
     void Start()

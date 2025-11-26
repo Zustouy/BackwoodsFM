@@ -13,6 +13,7 @@ public class RescueMissionManager : MonoBehaviour
     public float missionAreaRadius = 200f;
 
     [Header("References")]
+    public GameObject prefabScream;
     public Triangulator triangulator;
     public PhoneInteraction phoneInteraction;
     public MissionUI missionUI;
@@ -23,7 +24,6 @@ public class RescueMissionManager : MonoBehaviour
     public UnityEvent OnMissionStarted;
     public UnityEvent OnMissionFailed;
     public UnityEvent OnMissionCompleted;
-    public UnityEvent OnMissionTimeout;
 
     [Header("Debug / Visualization")]
     public bool debugShowTarget = true;
@@ -72,10 +72,11 @@ public class RescueMissionManager : MonoBehaviour
             if (Time.time >= missionEndTime)
             {
                 missionActive = false;
+                Instantiate(prefabScream, targetPosition, Quaternion.identity);
+                GloboalEventManager.SendOnMissionTimeout();
                 antennaA.EndMission(targetPosition, missionActive);
                 antennaB.EndMission(targetPosition, missionActive);
                 missionUI?.ShowMissionFailed();
-                OnMissionTimeout?.Invoke();
                 OnMissionFailed?.Invoke();
                 Debug.Log("Mission failed: timeout");
                 yield break;

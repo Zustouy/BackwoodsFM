@@ -1,10 +1,23 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PhoneInteraction : MonoBehaviour
 {
     public TextMeshPro numScreen;
+    public AudioSource audioSource;
+    [System.Serializable]
+    public class PhoneEvent 
+    {  
+        public string numb;
+        public AudioClip call;
+        public bool triggersEvent = true;
+        public UnityEvent action;
+    }
+
+    public List<PhoneEvent> events;
     public Action OnPhoneCalled;
     public string number;
     void Start()
@@ -13,11 +26,11 @@ public class PhoneInteraction : MonoBehaviour
     }
     public void Call()
     {
-        if (number == "911")
-        {
-            OnPhoneCalled?.Invoke();
-            Debug.Log("SEXUALKA CALL.");
-        }
+        foreach (var pnum in events)
+            if (number == pnum.numb)
+            {
+                audioSource?.PlayOneShot(pnum.call);
+            }
             
         numScreen.text = number = null;
         Debug.Log("Phone: call invoked.");

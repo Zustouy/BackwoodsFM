@@ -49,8 +49,8 @@ public class InteractableOutline : MonoBehaviour, IHoverable
     }
     public void ForceExit()
     {
-        forceHover = false;          // снимаем защиту
-        targetWidth = 0f;            // сразу гасим
+        forceHover = false;
+        targetWidth = 0f;
     }
 }
 
