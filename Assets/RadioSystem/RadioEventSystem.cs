@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class RadioEventSystem : MonoBehaviour
 {
     [System.Serializable]
-    public class RadioEvent
+    public class RadioEvent 
     {
         public string id;
         public UnityEvent action;
