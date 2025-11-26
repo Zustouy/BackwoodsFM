@@ -167,7 +167,7 @@ public class RescueMissionManager : MonoBehaviour
         return new Vector3(Mathf.Sin(rad), 0f, Mathf.Cos(rad)).normalized;
     }
 
-    private void HandlePhoneCalled()
+    public void HandlePhoneCalled()
     {
         if (!missionActive) return;
         if (!triangulated)

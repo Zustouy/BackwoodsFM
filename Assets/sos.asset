@@ -16,6 +16,6 @@ MonoBehaviour:
   frequency: 450
   clearRange: 4.04
   clip: {fileID: 0}
-  timer: 2
+  timer: 100
   triggersEvent: 0
   eventName: 

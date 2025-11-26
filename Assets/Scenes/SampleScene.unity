@@ -562,7 +562,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PhoneInteraction
   numScreen: {fileID: 666500782}
   audioSource: {fileID: 0}
-  events: []
+  events:
+  - numb: 911
+    call: {fileID: 0}
+    triggersEvent: 0
+    action:
+      m_PersistentCalls:
+        m_Calls: []
   number: 
 --- !u!114 &90030847
 MonoBehaviour:
