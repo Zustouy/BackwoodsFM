@@ -100,9 +100,10 @@ public class RadioSystem : MonoBehaviour
         foreach (var sos in sosSignals)
         {
             float d = Mathf.Abs(finalFrequency - sos.frequency);
-            if (d < sos.clearRange)
+            if (finalFrequency == sos.frequency)
             {
-                events.TriggerEvent(sos.eventName);
+                Debug.Log("SendOnSignalDetected invoked.");
+                GloboalEventManager.SendOnSignalDetected(sos.frequency, sos.timer);
             }
         }
 

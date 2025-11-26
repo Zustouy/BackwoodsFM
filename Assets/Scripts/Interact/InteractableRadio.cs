@@ -11,6 +11,7 @@ public class InteractableRadio : MonoBehaviour, IAction
     {
         if(Input.GetKeyDown(KeyCode.E)&& isSit)
         {
+            CursorManager.HideAndLock();
             interactExitEvent?.Invoke();
             player.SetState(PlayerState.Standing);
             isSit = false;
@@ -21,6 +22,7 @@ public class InteractableRadio : MonoBehaviour, IAction
     {
         if (!isSit)
         {
+            CursorManager.ShowAndUnlock();
             interactEnterEvent?.Invoke();
             player.SetState(PlayerState.Sitting);
             isSit = true;
