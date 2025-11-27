@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe33245c6e38336458998205bcf89641, type: 3}
   m_Name: YourturnFM
   m_EditorClassIdentifier: Assembly-CSharp::RadioChannel
-  channelName: 
-  frequency: 136
+  channelName: YourturnFM
+  frequency: 492
   clearRange: 0.15
   audioClips: []

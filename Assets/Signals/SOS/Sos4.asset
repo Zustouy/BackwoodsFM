@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d180e84e5ddcc7f4fa42f90eefc8ec00, type: 3}
   m_Name: Sos4
   m_EditorClassIdentifier: Assembly-CSharp::RadioSignalSOS
-  id: 
-  frequency: 136
-  clearRange: 0.1
-  clip: {fileID: 0}
-  isLoop: 0
-  timer: 0
+  id: 4
+  frequency: 160
+  clearRange: 0.3
+  clip: {fileID: 8300000, guid: 00c6f0489a576054db3d79a128a7b30f, type: 3}
+  isLoop: 1
+  timer: 111
   triggersEvent: 1
   eventName: 

@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe33245c6e38336458998205bcf89641, type: 3}
   m_Name: FrontwindFM
   m_EditorClassIdentifier: Assembly-CSharp::RadioChannel
-  channelName: 
-  frequency: 136
-  clearRange: 0.15
-  audioClips: []
+  channelName: FrontwindFM
+  frequency: 510
+  clearRange: 2.5
+  audioClips:
+  - {fileID: 8300000, guid: 8b3ddd7bcb7ab8e49a6618d36e62a914, type: 3}
+  - {fileID: 8300000, guid: 70bbd50947b31884b9d82af5abc7adec, type: 3}
