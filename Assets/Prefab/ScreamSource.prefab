@@ -143,4 +143,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   audioClips:
-  - {fileID: 8300000, guid: 9df9b05d50bb19c4ca9df5de8b29cc04, type: 3}
+  - {fileID: 8300000, guid: ea6e1e4fbcb21d24eab3335dc55ce5cb, type: 3}
+  - {fileID: 8300000, guid: d2066321d689cf64db1da636429b2ae5, type: 3}
+  - {fileID: 8300000, guid: 813d549b34d7db9409a3840d36193d77, type: 3}
+  - {fileID: 8300000, guid: 27c804b88b08a4c46864bd6f2e5a0f1f, type: 3}
+  - {fileID: 8300000, guid: 72f7ba86f3bde0b42afad93ec3b3c266, type: 3}
+  - {fileID: 8300000, guid: 49c8c2157817fb24e8df08e10a8ab753, type: 3}

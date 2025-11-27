@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe33245c6e38336458998205bcf89641, type: 3}
-  m_Name: SoftFM
+  m_Name: YourturnFM
   m_EditorClassIdentifier: Assembly-CSharp::RadioChannel
   channelName: 
-  frequency: 0
+  frequency: 136
   clearRange: 0.15
-  audioClip: {fileID: 0}
+  audioClips: []
