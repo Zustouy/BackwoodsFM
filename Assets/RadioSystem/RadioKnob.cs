@@ -3,7 +3,7 @@ using UnityEngine;
 public class RadioKnob : MonoBehaviour, IDraggable
 {
     [Header("⎯⎯⎯ Поворот ручки ⎯⎯⎯")]
-    public float sensitivity = 5f;
+    public float sensitivity = 1f;
     public float smooth = 10f;
     public Vector2 angleLimit = new Vector2(-170f, 170f);
 
@@ -94,10 +94,12 @@ public class RadioKnob : MonoBehaviour, IDraggable
 
             tunerAngleField?.SetValue(tunerScript, targetAngle);
         }
-
-        Vector3 e = transform.localEulerAngles;
-        float smoothAngle = Mathf.LerpAngle(e.z, targetAngle, Time.deltaTime * smooth);
-        transform.localEulerAngles = new Vector3(e.x, e.y, smoothAngle);
+        float displayAngle = targetAngle % 360f;
+        if (displayAngle > 180f) displayAngle -= 360f;
+        if (displayAngle < -180f) displayAngle += 360f;
+    
+        Quaternion desiredRot = Quaternion.Euler(0f, 0f, displayAngle);
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, desiredRot, Time.deltaTime * smooth);
     }
     private void HandleClicks()
     {

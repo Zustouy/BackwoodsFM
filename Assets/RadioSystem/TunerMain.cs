@@ -16,7 +16,7 @@ public class TunerMain : MonoBehaviour, IFrequencyTarget
 
     void OnEnable()
     {
-        RadioSwitch.OnFrequencyRangeChanged += SetValue;
+        GloboalEventManager.OnFrequencyRangeChanged += SetValue;
     }
     public void SetValue(float maxF, float minF)
     {

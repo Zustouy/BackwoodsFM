@@ -30,16 +30,23 @@ public class RadioSystem : MonoBehaviour
 
     [Header("Аудио источники")]
     public AudioSource channelSource;   // чистый канал
+    public AudioSource sosSource;       // SOS  сигнал
     public AudioSource noiseSource;     // белый шум
     public AudioSource fuzzSource;      // шипение при расстройке
     public AudioSource crackleSource;   // треск помех
 
     [Header("Параметры помех")]
+    public float channelBase = 0.8f;
+    public float sosBase = 0.6f;
     public float noiseBase = 0.3f;
     public float fuzzBase = 0.3f;
     public float crackleChance = 0.05f;
 
     [Header("Внутренние данные (runtime)")]
+    [SerializeField] private float radioAccuracy;
+    [SerializeField] private float currenRadioAccuracy;
+    [SerializeField] private float currenRadioAccuracySmooch;
+    [SerializeField] private Material mat;
     [SerializeField] private Dictionary<RadioChannel, ChannelSwitchData> channelSwitchDatas = new();
     [SerializeField] private RadioSignalSOS sosSignal;    private void Awake()
     {
@@ -61,6 +68,7 @@ public class RadioSystem : MonoBehaviour
             };
         }
         isOn = false;
+        mat.SetFloat("_Accuracy",0);
         Off();
     }
     private void StartMission(float arg1, RadioSignalSOS sos)
@@ -78,6 +86,7 @@ public class RadioSystem : MonoBehaviour
             ProcessChannels();
             ProcessNoise();
             ProcessSignals();
+            ProcessAccuracy();
         }
     }
     public void Off()
@@ -141,7 +150,7 @@ public class RadioSystem : MonoBehaviour
             channelSource.time = data.interruptTime;
             channelSource.Play();
         }
-        float t = Mathf.Clamp01(bestDist / closest.clearRange);
+        float t = radioAccuracy = Mathf.Clamp01(bestDist / closest.clearRange);
         channelSource.volume = (1f - t) * gain;
     }
     void ProcessNoise()
@@ -154,15 +163,31 @@ public class RadioSystem : MonoBehaviour
             crackleSource.Play();
     }
     void ProcessSignals()
-    {       
-        if (sosSignal != null)
+    {   
+        if (!sosSignal) return;
+        RadioSignalSOS closest = null;
+        float bestDist = Mathf.Infinity;
+
+        float d = Mathf.Abs(finalFrequency - sosSignal.frequency);
+        if (d < bestDist)
         {
-            float d = Mathf.Abs(finalFrequency - sosSignal.frequency);
-            if (d < sosSignal.clearRange)
-            {
-                Debug.Log("SendOnSignalDetected invoked.");
-            }
+            bestDist = d;
+            closest = sosSignal;
         }
+        
+        if (closest == null) return;
+
+        if (!sosSource.isPlaying)
+        {
+            sosSource.loop = closest.isLoop;
+            sosSource.clip = closest.clip;
+            sosSource.Play();
+        }
+
+        float t = radioAccuracy = Mathf.Clamp01(bestDist / closest.clearRange);
+
+        sosSource.volume =  sosBase * (1 - t) * gain;
+
         // foreach (var a in anomalySignals)
         // {
         //     float d = Mathf.Abs(finalFrequency - a.frequency);
@@ -181,7 +206,12 @@ public class RadioSystem : MonoBehaviour
             startRealtime = Time.realtimeSinceStartup - startTime,
             interruptTime = 0f
         };
-    } 
+    }
+    private void ProcessAccuracy()
+    {
+        currenRadioAccuracy = Mathf.Lerp(currenRadioAccuracy, 1-radioAccuracy, Time.deltaTime * currenRadioAccuracySmooch);
+        mat.SetFloat("_Accuracy",currenRadioAccuracy);
+    }
     IEnumerator OffEffects()
     {
         isOn = false;

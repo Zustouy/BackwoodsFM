@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 
 public class RadioSwitch : MonoBehaviour
 {
@@ -21,8 +20,6 @@ public class RadioSwitch : MonoBehaviour
     [Header("Внутренние данные")]
     [SerializeField] private Camera cam;
 
-    public static event Action<float, float> OnFrequencyRangeChanged;
-
     void Start()
     {
         cam = Camera.main;
@@ -38,10 +35,10 @@ public class RadioSwitch : MonoBehaviour
                 {
                     changeFrequency = !changeFrequency;
                     clickSource.PlayOneShot(clickSound);
-                    if (changeFrequency)
-                        OnFrequencyRangeChanged?.Invoke(maxVHF, minVHF);
+                    if (!changeFrequency)
+                        GloboalEventManager.SensOnFrequencyRangeChanged(maxVHF, minVHF);
                     else
-                        OnFrequencyRangeChanged?.Invoke(maxUHF, minUHF);
+                        GloboalEventManager.SensOnFrequencyRangeChanged(maxUHF, minUHF);
                 }
             }
         }

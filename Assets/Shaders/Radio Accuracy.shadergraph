@@ -4,9 +4,6 @@
     "m_ObjectId": "5b087934fc5e4c83ba067ad3d7043d18",
     "m_Properties": [
         {
-            "m_Id": "b081befe24604b698caa88dcdb59b779"
-        },
-        {
             "m_Id": "423a06b5dacd407b9673d683b7c57dbd"
         },
         {
@@ -1298,9 +1295,6 @@
             "m_Id": "423a06b5dacd407b9673d683b7c57dbd"
         },
         {
-            "m_Id": "b081befe24604b698caa88dcdb59b779"
-        },
-        {
             "m_Id": "aeb4c474e60247e898074733603bff35"
         },
         {
@@ -2265,7 +2259,7 @@
             "r": 2.0,
             "g": 0.7951849699020386,
             "b": 0.0,
-            "a": 0.0
+            "a": 1.0
         },
         "key3": {
             "r": 0.014884306117892266,
@@ -2297,17 +2291,17 @@
             "b": 0.0,
             "a": 0.0
         },
-        "ctime0": 41056,
-        "ctime1": 52621,
-        "ctime2": 63029,
+        "ctime0": 0,
+        "ctime1": 32768,
+        "ctime2": 49151,
         "ctime3": 64957,
         "ctime4": 0,
         "ctime5": 0,
         "ctime6": 0,
         "ctime7": 0,
-        "atime0": 41249,
-        "atime1": 65535,
-        "atime2": 0,
+        "atime0": 0,
+        "atime1": 32575,
+        "atime2": 65535,
         "atime3": 0,
         "atime4": 0,
         "atime5": 0,
@@ -2318,46 +2312,6 @@
         "m_NumColorKeys": 4,
         "m_NumAlphaKeys": 2
     }
-}
-
-{
-    "m_SGVersion": 1,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
-    "m_ObjectId": "b081befe24604b698caa88dcdb59b779",
-    "m_Guid": {
-        "m_GuidSerialized": "1ec18d77-1db0-4e27-9dcb-fac464d7afb1"
-    },
-    "m_Name": "AccuracyMasc",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "AccuracyMasc",
-    "m_DefaultReferenceName": "_AccuracyMasc",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_DismissedVersion": 0,
-    "m_Precision": 2,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_PerRendererData": false,
-    "m_customAttributes": [],
-    "m_Value": -0.28999999165534975,
-    "m_FloatType": 0,
-    "m_RangeValues": {
-        "x": 0.0,
-        "y": 1.0
-    },
-    "m_SliderType": 0,
-    "m_SliderPower": 3.0,
-    "m_EnumType": 0,
-    "m_CSharpEnumString": "",
-    "m_EnumNames": [
-        "Default"
-    ],
-    "m_EnumValues": [
-        0
-    ]
 }
 
 {
@@ -2686,8 +2640,8 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -2354.0,
-            "y": -90.00001525878906,
+            "x": -2005.000244140625,
+            "y": -90.00000762939453,
             "width": 124.0,
             "height": 34.00001525878906
         }

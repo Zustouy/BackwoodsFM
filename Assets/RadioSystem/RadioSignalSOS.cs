@@ -17,6 +17,9 @@ public class RadioSignalSOS : ScriptableObject
 
     [Header("Аудио SOS-сообщения")]
     public AudioClip clip;
+    
+    [Header("Зацикленное  ли SOS-сообщение зацткленым")]
+    public bool  isLoop;
 
     [Header("Время на спасение (сек)")]
     public float timer;

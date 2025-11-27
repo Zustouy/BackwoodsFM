@@ -8,6 +8,7 @@ public class GloboalEventManager
 
     //Частота
     public static event Action<float> OnFrequencyWrite;
+    public static event Action<float, float> OnFrequencyRangeChanged;
 
     //Миссия
     public static event Action<float, RadioSignalSOS> OnStartMission;
@@ -18,6 +19,9 @@ public class GloboalEventManager
     public static event Action OnFlareGun;
     public static event Action OnPhoneCalled;
     public static event Action OnSosSignalCreate;
+
+    public static void SensOnFrequencyRangeChanged(float maxVHF, float minVHF)
+        => OnFrequencyRangeChanged?.Invoke(maxVHF,minVHF);
 
     public static void SendDisableCameraMove(bool isinter)
         => disableCameraMove?.Invoke(isinter);

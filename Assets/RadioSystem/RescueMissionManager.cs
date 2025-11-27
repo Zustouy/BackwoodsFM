@@ -202,7 +202,7 @@ public class RescueMissionManager : MonoBehaviour
     {
         if (!debugShowTarget) return;
         
-        Gizmos.color = new Color(0, 1, 0, 0.1f);
+        Gizmos.color = new Color(0, 1, 0, 0.5f);
         Gizmos.DrawSphere(missionAreaCenter, missionAreaRadius);
 
         if (missionActive)
