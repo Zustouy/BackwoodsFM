@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: sos
   m_EditorClassIdentifier: Assembly-CSharp::RadioSignalSOS
   id: 10
-  frequency: 450
+  frequency: 400
   clearRange: 4.04
-  clip: {fileID: 0}
-  timer: 100
+  clip: {fileID: 8300000, guid: 78051b2bc990c924b8b36463e9123460, type: 3}
+  timer: 1053.1
   triggersEvent: 0
   eventName: 

@@ -1,11 +1,18 @@
 using UnityEngine;
 public class TunerMain : MonoBehaviour, IFrequencyTarget
 {
+    [Header("Радиоприёмник")]
     public RadioSystem radio;
+
+    [Header("Текущий диапазон")]
     public float minFreq = 136f;
     public float maxFreq = 174f;
-    public float angle;
+
+    [Header("Шаг основной настройки (МГц)")]
     public float step = 0.5f;
+
+    [Header("Положение ручки основной настройки")]
+    public float angle;
 
     void OnEnable()
     {

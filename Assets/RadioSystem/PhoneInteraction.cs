@@ -6,26 +6,26 @@ using UnityEngine.Events;
 
 public class PhoneInteraction : MonoBehaviour
 {
+    [Header("⎯⎯⎯ UI ⎯⎯⎯")]
     public TextMeshPro numScreen;
     public AudioSource audioSource;
-    [System.Serializable]
-    public class PhoneEvent 
-    {  
-        public string numb;
-        public AudioClip call;
-        public bool triggersEvent = true;
-        public UnityEvent action;
-    }
 
+    [Header("⎯⎯⎯ Номера и события ⎯⎯⎯")]
     public List<PhoneEvent> events;
-    public Action OnPhoneCalled;
-    public string number;
+
+    [Header("⎯⎯⎯ Внутренние данные ⎯⎯⎯")]
+    [SerializeField] private string number;
     void Start()
     {
         numScreen.text = null;
     }
     public void Call()
     {
+        if (number == "911")
+        {
+            RescueServiceCall();
+            return;
+        }
         foreach (var pnum in events)
             if (number == pnum.numb)
             {
@@ -53,5 +53,18 @@ public class PhoneInteraction : MonoBehaviour
         #if UNITY_EDITOR
         UnityEditor.Handles.Label(transform.position + Vector3.up * 0.1f, label);
         #endif
+    }
+    public void RescueServiceCall()
+    {
+        print("sadas");
+        GloboalEventManager.SendOnPhoneCalled();
+    }
+    [System.Serializable]
+    public class PhoneEvent 
+    {  
+        public string numb;
+        public AudioClip call;
+        public bool triggersEvent = true;
+        public UnityEvent action;
     }
 }

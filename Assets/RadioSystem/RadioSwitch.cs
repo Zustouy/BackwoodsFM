@@ -3,17 +3,23 @@ using System;
 
 public class RadioSwitch : MonoBehaviour
 {
+    [Header("Диапазон VHF (авиация)")]
     public float minVHF = 136f;
     public float maxVHF = 174f;
+
+    [Header("Диапазон UHF (военный/спасательный)")]
     public float minUHF = 400f;
     public float maxUHF = 520f;
-    public bool changeFrequency;
 
-    [Header("Sounds")]
+    [Header("Звук переключения")]
     public AudioSource clickSource;
     public AudioClip clickSound;
 
-    private Camera cam;
+    [Header("Текущее состояние")]
+    [SerializeField] private bool changeFrequency = false;
+
+    [Header("Внутренние данные")]
+    [SerializeField] private Camera cam;
 
     public static event Action<float, float> OnFrequencyRangeChanged;
 

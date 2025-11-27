@@ -2,26 +2,29 @@ using UnityEngine;
 
 public class RadioKnob : MonoBehaviour, IDraggable
 {
-    [Header("Rotation")]
+    [Header("⎯⎯⎯ Поворот ручки ⎯⎯⎯")]
     public float sensitivity = 5f;
     public float smooth = 10f;
     public Vector2 angleLimit = new Vector2(-170f, 170f);
-    
-    [Tooltip("Script with public float angle; or a property.")]
+
+    [Header("⎯⎯⎯ Связанный тюнер ⎯⎯⎯")]
+    [Tooltip("Скрипт с публичным float angle (например, AntennaTuner)")]
     public Component tunerScript;
 
-    [Header("Sounds")]
+    [Header("⎯⎯⎯ Звук трещотки ⎯⎯⎯")]
     public AudioSource clickSource;
     public AudioClip clickSound;
     public float clickAngleStep = 3f;
 
+    [Header("⎯⎯⎯ Состояние перетаскивания ⎯⎯⎯")]
     public bool IsDragging => isDragging;
-    private bool isDragging = false;
 
-    private float targetAngle = 0f;
-    private float lastClickAngle = 0f;
-    private Camera cam;
-    private System.Reflection.FieldInfo tunerAngleField;
+    [Header("⎯⎯⎯ Внутренние данные ⎯⎯⎯")]
+    [SerializeField] private bool isDragging = false;
+    [SerializeField] private float targetAngle = 0f;
+    [SerializeField] private float lastClickAngle = 0f;
+    [SerializeField] private Camera cam;
+    [SerializeField, HideInInspector] private System.Reflection.FieldInfo tunerAngleField;
 
     void Start()
     {
@@ -42,7 +45,6 @@ public class RadioKnob : MonoBehaviour, IDraggable
         RotateKnob();
         HandleClicks();
     }
-
     private void HandleInput()
     {
         if (Input.GetMouseButtonDown(0))
@@ -53,7 +55,6 @@ public class RadioKnob : MonoBehaviour, IDraggable
                     StartDrag();
             }
         }
-
         if (Input.GetMouseButtonUp(0))
             StopDrag();
     }
@@ -61,7 +62,7 @@ public class RadioKnob : MonoBehaviour, IDraggable
     {
         isDragging = true;
         CursorManager.Hide();
-
+        GloboalEventManager.SendDisableCameraMove(true);
         foreach (var h in GetComponents<IHoverable>())
             h.OnHoverEnter();
         foreach (var h in GetComponents<IHoverable>())
@@ -70,7 +71,9 @@ public class RadioKnob : MonoBehaviour, IDraggable
     private void StopDrag()
     {
         isDragging = false;
-        CursorManager.ShowAndUnlock();
+        if (Player.Instance.state == PlayerState.Sitting) 
+            CursorManager.ShowAndUnlock();
+        GloboalEventManager.SendDisableCameraMove(false);
         foreach (var h in GetComponents<IHoverable>())
         {
             var outline = h as InteractableOutline;
@@ -81,8 +84,6 @@ public class RadioKnob : MonoBehaviour, IDraggable
             }
         }
     }
-
-
     private void RotateKnob()
     {
         if (isDragging)
@@ -98,7 +99,6 @@ public class RadioKnob : MonoBehaviour, IDraggable
         float smoothAngle = Mathf.LerpAngle(e.z, targetAngle, Time.deltaTime * smooth);
         transform.localEulerAngles = new Vector3(e.x, e.y, smoothAngle);
     }
-
     private void HandleClicks()
     {
         if (Mathf.Abs(targetAngle - lastClickAngle) >= clickAngleStep)

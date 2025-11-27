@@ -5060,13 +5060,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 869232213}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.4574406, y: -0.6728286, z: 0.32998642, w: 0.4787053}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 61.885, y: -133.42, z: -39.482}
 --- !u!114 &869232216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8032,7 +8032,6 @@ MonoBehaviour:
   channels:
   - {fileID: 11400000, guid: fb53b09e52703f642a7dcf9475d2de3e, type: 2}
   sosSignals: []
-  anomalySignals: []
   channelSource: {fileID: 1610534995}
   noiseSource: {fileID: 466279752}
   fuzzSource: {fileID: 1501323115}
@@ -9586,6 +9585,71 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1912719465}
   m_SourcePrefab: {fileID: 100100000, guid: 8a6bde2c7287a3e4f9c6cb69c2191ad2, type: 3}
+--- !u!1001 &8317154003242935944
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1463301291212223458, guid: af006b06374bea5449733ff841a0fd54, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 507.78534
+      objectReference: {fileID: 0}
+    - target: {fileID: 1463301291212223458, guid: af006b06374bea5449733ff841a0fd54, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 127.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 1463301291212223458, guid: af006b06374bea5449733ff841a0fd54, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 357
+      objectReference: {fileID: 0}
+    - target: {fileID: 1463301291212223458, guid: af006b06374bea5449733ff841a0fd54, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071072
+      objectReference: {fileID: 0}
+    - target: {fileID: 1463301291212223458, guid: af006b06374bea5449733ff841a0fd54, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071064
+      objectReference: {fileID: 0}
+    - target: {fileID: 1463301291212223458, guid: af006b06374bea5449733ff841a0fd54, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1463301291212223458, guid: af006b06374bea5449733ff841a0fd54, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1463301291212223458, guid: af006b06374bea5449733ff841a0fd54, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1463301291212223458, guid: af006b06374bea5449733ff841a0fd54, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1463301291212223458, guid: af006b06374bea5449733ff841a0fd54, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1939772811818889785, guid: af006b06374bea5449733ff841a0fd54, type: 3}
+      propertyPath: 'CollisionModule.m_Planes.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1939772811818889785, guid: af006b06374bea5449733ff841a0fd54, type: 3}
+      propertyPath: 'TriggerModule.primitives.Array.data[0]'
+      value: 
+      objectReference: {fileID: 790159947}
+    - target: {fileID: 6770948105359194276, guid: af006b06374bea5449733ff841a0fd54, type: 3}
+      propertyPath: m_Name
+      value: RocketTrail
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: af006b06374bea5449733ff841a0fd54, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -9602,3 +9666,4 @@ SceneRoots:
   - {fileID: 1771838745}
   - {fileID: 502587490}
   - {fileID: 1155919146}
+  - {fileID: 8317154003242935944}

@@ -1,5 +1,10 @@
 public enum AntennaId
 {
-    AntennaA, // локальная (на базе)
-    AntennaB  // удалённая (дистанционно)
+    AntennaA,
+    AntennaB
+}
+public enum PlayerState 
+{
+    Standing,
+    Sitting 
 }
