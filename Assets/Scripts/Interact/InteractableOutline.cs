@@ -3,16 +3,18 @@ using UnityEngine;
 [RequireComponent(typeof(Outline))]
 public class InteractableOutline : MonoBehaviour, IHoverable
 {
+    [Header("Параметры обводки")]
     public float maxOutlineWidth = 5f;
     public float fadeSpeed = 8f;
 
+    [Header("Поддержка перетаскивания")]
     [SerializeField] private MonoBehaviour draggableSource;
-    private IDraggable draggable;
 
-    private Outline outline;
-    private float targetWidth = 0f;
-
-    private bool forceHover = false;
+    [Header("Внутренние данные")]
+    [SerializeField] private Outline outline;
+    [SerializeField] private IDraggable draggable;
+    [SerializeField] private float targetWidth = 0f;
+    [SerializeField] private bool forceHover = false;
     public void ForceHover(bool state) => forceHover = state;
 
     public bool LockHover => forceHover || IsBeingDragged;

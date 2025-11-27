@@ -1,17 +1,49 @@
 using System;
-using UnityEngine;
 
 public class GloboalEventManager
 {
-    public static event Action<float, float> OnSignalDetected;
+
+    //Управление камерой
+    public static event Action<bool> disableCameraMove;
+
+    //Частота
+    public static event Action<float> OnFrequencyWrite;
+    public static event Action<float, float> OnFrequencyRangeChanged;
+
+    //Миссия
+    public static event Action<float, RadioSignalSOS> OnStartMission;
     public static event Action OnMissionTimeout;
+    public static event Action OnMissionCompleted;
+
+    //События в мире
+    public static event Action OnFlareGun;
+    public static event Action OnPhoneCalled;
+    public static event Action OnSosSignalCreate;
+
+    public static void SensOnFrequencyRangeChanged(float maxVHF, float minVHF)
+        => OnFrequencyRangeChanged?.Invoke(maxVHF,minVHF);
+
+    public static void SendDisableCameraMove(bool isinter)
+        => disableCameraMove?.Invoke(isinter);
+
+    public static void SendOnFrequencyWrite(float frequency)
+        => OnFrequencyWrite?.Invoke(frequency);
 
     public static void SendOnMissionTimeout()
-    {
-        OnMissionTimeout?.Invoke();
-    }
-    public static void SendOnSignalDetected(float frequency, float time)
-    {
-        OnSignalDetected?.Invoke(frequency, time);
-    }
+        => OnMissionTimeout?.Invoke();
+
+    public static void SendOnStartMission(float frequency, RadioSignalSOS sosSignal)
+        => OnStartMission?.Invoke(frequency, sosSignal);
+
+    public static void SendOnMissionCompleted()
+        => OnMissionCompleted?.Invoke();
+
+    public static void SendOnPhoneCalled()
+        => OnPhoneCalled?.Invoke();
+
+    public static void SendOnSosSignalCreate()
+        => OnSosSignalCreate?.Invoke();
+
+    public static void SendOnFlareGun()
+        => OnFlareGun?.Invoke();
 }

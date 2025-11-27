@@ -1,10 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
 public class ScreamTheForest : MonoBehaviour
 {
+    [Header("⎯⎯⎯ Список Криков ⎯⎯⎯")]
     public List<AudioClip> audioClips;
     
     private void Awake()

@@ -1,44 +1,60 @@
 using System.Collections;
-using Unity.VisualScripting;
+using Unity.Collections;
 using UnityEngine;
-using UnityEngine.Timeline;
 
 [RequireComponent(typeof(Collider))]
 public class DirectionalAntenna : MonoBehaviour
 {
+    [Header("⎯⎯⎯ Основные параметры антенны ⎯⎯⎯")]
     public AntennaId antennaId;
-    public float frequency;
-    public Vector2Int angleLimit =  new Vector2Int(-45, 45);
     public Material material;
     public Transform antennaVisual;
+    public float frequency;
+    public float frequencyScaning;
+    public Vector2Int angleLimit = new(-45, 45);
 
-    [Header("Debug Settings")]
-    public float debugRayLength = 50f;
-    public bool showFlatProjection = true;
+    [Header("⎯⎯⎯ Настройки точности ⎯⎯⎯")]
+    [SerializeField] private float currentAccuracySmooch = 5f;
+    [SerializeField] private float maxAcceptableError = 10f;
 
-    private Vector3 targetPosition;
-    private bool isScaning;
-    private RescueMissionManager missionManager;
-    private float angle = 0f;
+
+    [Header("⎯⎯⎯ Отладка ⎯⎯⎯")]
+    [SerializeField] private float debugRayLength = 50f;
+    [SerializeField] private bool showFlatProjection = true;
+
+    [Header("⎯⎯⎯ Внутренние данные ⎯⎯⎯")]
+    [SerializeField] private float angle;
+    [SerializeField] private float currentAccuracy;
+    [SerializeField] private bool isScaning;
+    [SerializeField] private Vector3 targetPosition;
+    [SerializeField] private RescueMissionManager missionManager;
+
 
     public void Init(RescueMissionManager manager, AntennaId id)
     {
+        GloboalEventManager.OnFrequencyWrite += WriteFrequency;
         missionManager = manager;
         antennaId = id;
         angle = antennaVisual.localEulerAngles.y;
         material.SetFloat("_Accuracy",0);
     }
+    private void WriteFrequency(float Write)
+    {
+        frequency = Write;
+    }
+
     public void RotareAntenna(float lAngle)
     {
         Vector3 e = antennaVisual.localEulerAngles;
         angle = Mathf.Lerp(angleLimit.x, angleLimit.y, lAngle);
         antennaVisual.localEulerAngles = new Vector3(e.x, angle, e.z);
-        if (isScaning)
+        if (isScaning && frequency == frequencyScaning)
         {
             Vector3 dir = TriangulationUtils.AzimuthToDirection(GetAzimuthDeg());
             float angleError = TriangulationUtils.AngleToTarget(transform.position, dir, targetPosition);
-            float progress = TriangulationUtils.GetAccuracyProgress(angleError, 10f);
-            material.SetFloat("_Accuracy",progress);
+            float progress = TriangulationUtils.GetAccuracyProgress(angleError, maxAcceptableError);
+            currentAccuracy = Mathf.Lerp(currentAccuracy, progress, Time.deltaTime *currentAccuracySmooch);
+            material.SetFloat("_Accuracy",currentAccuracy);
         }
     }
 
@@ -62,8 +78,9 @@ public class DirectionalAntenna : MonoBehaviour
         missionManager?.RegisterAntennaLock(antennaId, transform.position, az);
         Debug.Log($"Remote lock triggered for {antennaId}, az={az}");
     }
-    public void StartMission(Vector3 tp, bool missionActive)
+    public void StartMission(Vector3 tp, bool missionActive, float frequency)
     {
+        frequencyScaning = frequency;
         targetPosition = tp;
         isScaning = missionActive;
     }

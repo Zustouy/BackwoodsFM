@@ -1,14 +1,16 @@
 using UnityEngine;
 public class RadioOnOff : MonoBehaviour
 {
-    [Header("Radio")]
+    [Header("⎯⎯⎯ Система радио ⎯⎯⎯")]
     public RadioSystem radio;
 
-    [Header("Sounds")]
+    [Header("⎯⎯⎯ Звуки включения/выключения ⎯⎯⎯")]
     public AudioSource clickSource;
-    public AudioClip OnSound;    
+    public AudioClip OnSound;
     public AudioClip OffSound;
-    private Camera cam;
+
+    [Header("⎯⎯⎯ Внутренние данные ⎯⎯⎯")]
+    [SerializeField] private Camera cam;
 
     void Start()
     {

@@ -3,9 +3,10 @@ using UnityEngine;
 using UnityEngine.Events;
 public class InteractableRadio : MonoBehaviour, IAction
 {
+    [Header("⎯⎯⎯ Действие при взаимодействии ⎯⎯⎯")]
     public UnityEvent interactEnterEvent;
     public UnityEvent interactExitEvent;
-    public Player player;
+
     bool isSit = false;
     void Update()
     {
@@ -13,7 +14,7 @@ public class InteractableRadio : MonoBehaviour, IAction
         {
             CursorManager.HideAndLock();
             interactExitEvent?.Invoke();
-            player.SetState(PlayerState.Standing);
+            Player.Instance.SetState(PlayerState.Standing);
             isSit = false;
         }
 
@@ -24,7 +25,7 @@ public class InteractableRadio : MonoBehaviour, IAction
         {
             CursorManager.ShowAndUnlock();
             interactEnterEvent?.Invoke();
-            player.SetState(PlayerState.Sitting);
+            Player.Instance.SetState(PlayerState.Sitting);
             isSit = true;
         }
     }

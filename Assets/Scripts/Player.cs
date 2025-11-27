@@ -1,20 +1,52 @@
-using System;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.Events;
+
 
 public class Player : MonoBehaviour
 {
-    public PlayerState state;
+    [Header("⎯⎯⎯ Синглтон ⎯⎯⎯")]
+    public static Player Instance { get; private set; }
+
+    [Header("⎯⎯⎯ Основные ссылки ⎯⎯⎯")]
     public Camera mainCamera;
-    private float interactableDistance = 1.5f;
+    public CinemachineInputAxisController cinemachinePanTilt;
+
+    [Header("⎯⎯⎯ Состояние игрока ⎯⎯⎯")]
+    public PlayerState state;
     public bool isOnRadio = false;
-    public static Player Insyance;
-    private HashSet<IHoverable> previous = new HashSet<IHoverable>();
+
+    [Header("⎯⎯⎯ Настройки взаимодействия ⎯⎯⎯")]
+    [SerializeField] private float interactableDistance = 1.5f;
+
+    [Header("⎯⎯⎯ Внутренние данные ⎯⎯⎯")]
+    [SerializeField] private HashSet<IHoverable> previous = new HashSet<IHoverable>();
+    
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(this.gameObject);
+    }
     void Start()
     {
+        CursorManager.HideAndLock();
+        GloboalEventManager.disableCameraMove += disableCameraMove;
         mainCamera = Camera.main;
     }
+
+    private void disableCameraMove(bool isInter)
+    {
+        if (isInter)
+            cinemachinePanTilt.enabled = false;
+        else
+            cinemachinePanTilt.enabled = true;
+    }
+
     void Update()
     {
         Ray ray = (state == PlayerState.Standing)
@@ -35,7 +67,6 @@ public class Player : MonoBehaviour
         {
             bool stillInside = current.Contains(old);
 
-            // если потеряли hover И нет LockHover
             if (!stillInside && !old.LockHover)
                 old.OnHoverExit();
         }

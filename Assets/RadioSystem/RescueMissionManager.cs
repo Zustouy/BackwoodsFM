@@ -1,64 +1,78 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class RescueMissionManager : MonoBehaviour
 {
-    [Header("Antennas")]
-    public DirectionalAntenna antennaA; // локальная (A)
-    public DirectionalAntenna antennaB; // удалённая (B)
+    [Header("⎯⎯⎯ Антенны ⎯⎯⎯")]
+    public DirectionalAntenna antennaA;
+    public DirectionalAntenna antennaB;
 
-    [Header("Mission area")]
-    public Vector3 missionAreaCenter = Vector3.zero;
+    [Header("⎯⎯⎯ Зона миссии ⎯⎯⎯")]
     public float missionAreaRadius = 200f;
+    public Vector3 missionAreaCenter = Vector3.zero;
 
-    [Header("References")]
+    [Header("⎯⎯⎯ Префабы и ссылки ⎯⎯⎯")]
     public GameObject prefabScream;
+    public GameObject prefabFlareGun;
     public Triangulator triangulator;
-    public PhoneInteraction phoneInteraction;
     public MissionUI missionUI;
 
-    [Header("Tuning")]
+    [Header("⎯⎯⎯ Настройки миссии ⎯⎯⎯")]
     public float requiredLockAngleDiffDeg = 0.1f;
+    public float frequency;
+    public float frequencyScaning;
+    public TextMeshPro cordOut;
 
+
+    [Header("⎯⎯⎯ События ⎯⎯⎯")]
     public UnityEvent OnMissionStarted;
     public UnityEvent OnMissionFailed;
-    public UnityEvent OnMissionCompleted;
 
-    [Header("Debug / Visualization")]
+    [Header("⎯⎯⎯ Отладка ⎯⎯⎯")]
     public bool debugShowTarget = true;
-    public GameObject targetDebugMarkerPrefab;
 
-    private bool missionActive = false;
-    private Vector3 targetPosition;
-    private float missionEndTime;
-    private AntennaMeasurement measA;
-    private AntennaMeasurement measB;
-    private bool hasA = false;
-    private bool hasB = false;
-    private bool triangulated = false;
-    private Vector3 lastEstimated;
+    [Header("⎯⎯⎯ Внутренние данные ⎯⎯⎯")]
+    [SerializeField] private float missionEndTime;
+    [SerializeField] private bool hasA = false;
+    [SerializeField] private bool hasB = false;
+    [SerializeField] private bool missionActive = false;
+    [SerializeField] private bool triangulated = false;
+    [SerializeField] private AntennaMeasurement measA;
+    [SerializeField] private AntennaMeasurement measB;
+    [SerializeField] private Vector3 lastEstimated;
+    [SerializeField] private Vector3 targetPosition;
 
     void Start()
     {
+        GloboalEventManager.OnStartMission += StartMission;
+        GloboalEventManager.OnPhoneCalled += HandlePhoneCalled;
+        GloboalEventManager.OnFrequencyWrite += WriteFrequency;
         if (antennaA != null) antennaA.Init(this, AntennaId.AntennaA);
         if (antennaB != null) antennaB.Init(this, AntennaId.AntennaB);
-        GloboalEventManager.OnSignalDetected += StartMission;
-        if (phoneInteraction != null) phoneInteraction.OnPhoneCalled += HandlePhoneCalled;
     }
 
-    public void StartMission(float frequency, float missionDurationSeconds)
+    private void WriteFrequency(float Write)
+    {
+        frequency = Write;
+    }
+
+    public void StartMission(float frequency, RadioSignalSOS missionSignal)
     {
         if (missionActive) return;
 
         missionActive = true;
+        frequencyScaning = frequency;
         targetPosition = GenerateRandomTarget();
-        antennaA.StartMission(targetPosition, missionActive);
-        antennaB.StartMission(targetPosition, missionActive);
-        missionEndTime = Time.time + missionDurationSeconds;
+        antennaA.StartMission(targetPosition, missionActive, frequency);
+        antennaB.StartMission(targetPosition, missionActive, frequency);
+        Instantiate(prefabFlareGun, targetPosition, Quaternion.LookRotation(Vector3.up));
+        GloboalEventManager.SendOnFlareGun();
+        missionEndTime = Time.time + missionSignal.timer;
         hasA = hasB = triangulated = false;
         lastEstimated = Vector3.zero;
-        missionUI?.ShowMissionStarted(missionDurationSeconds);
+        missionUI?.ShowMissionStarted(missionSignal.timer);
         if (triangulator != null) triangulator.SetTrueTarget(targetPosition);
         OnMissionStarted?.Invoke();
         StartCoroutine(MissionTick());
@@ -156,7 +170,8 @@ public class RescueMissionManager : MonoBehaviour
         Debug.Log($"Triangulation updated: {estimated:F1} (conf: {confidence:F2}), angle diff: {angleDiff:F1}°");
 
         lastEstimated = estimated;
-        if (!missionActive) return;
+        cordOut.text  = $"X = {estimated.x:000.0} Y = {estimated.z:000.0}";
+        if (!missionActive || frequencyScaning != frequency) return;
         triangulated = true;
         missionUI?.ShowTargetLocked(estimated, confidence);
     }
@@ -169,10 +184,9 @@ public class RescueMissionManager : MonoBehaviour
 
     public void HandlePhoneCalled()
     {
-        if (!missionActive) return;
-        if (!triangulated)
+        print("sex");
+        if (!triangulated || frequencyScaning != frequency || !missionActive)
         {
-            missionUI?.ShowStatus("No target locked yet. Triangulate before calling.");
             return;
         }
 
@@ -180,7 +194,7 @@ public class RescueMissionManager : MonoBehaviour
         antennaA.EndMission(targetPosition, missionActive);
         antennaB.EndMission(targetPosition, missionActive);
         missionUI?.ShowMissionCompleted();
-        OnMissionCompleted?.Invoke();
+        GloboalEventManager.SendOnMissionCompleted();
         Debug.Log("Mission completed: call succeeded.");
         
     }
@@ -188,7 +202,7 @@ public class RescueMissionManager : MonoBehaviour
     {
         if (!debugShowTarget) return;
         
-        Gizmos.color = new Color(0, 1, 0, 0.1f);
+        Gizmos.color = new Color(0, 1, 0, 0.5f);
         Gizmos.DrawSphere(missionAreaCenter, missionAreaRadius);
 
         if (missionActive)

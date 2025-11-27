@@ -2,19 +2,26 @@ using UnityEngine;
 
 public class FrequencyIndicator : MonoBehaviour
 {
-    public Transform sliderObject;      // твоя стрелка/ползунок
-    public float smooth = 10f;
+    [Header("Визуализация")]
+    public Transform sliderObject;
+
+    [Header("Диапазон частот")]
     public float minFreq = 136f;
     public float maxFreq = 174f;
 
-    public float minX = -0.2f;          // позиция ползунка при minFreq
-    public float maxX =  0.2f;          // позиция ползунка при maxFreq
+    [Header("Положение слайдера")]
+    public float minX = -0.2f;
+    public float maxX =  0.2f;
 
+    [Header("Сглаживание")]
+    public float smooth = 10f;
+
+    [Header("Текущая частота")]
     public float currentFrequency;
 
     void OnEnable()
     {
-        RadioSwitch.OnFrequencyRangeChanged += SetValue;
+        GloboalEventManager.OnFrequencyRangeChanged += SetValue;
     }
     public void SetValue(float maxF, float minF)
     {

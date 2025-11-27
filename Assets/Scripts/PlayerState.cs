@@ -1,1 +1,0 @@
-public enum PlayerState { Standing, Sitting }

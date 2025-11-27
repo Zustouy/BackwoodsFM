@@ -5,70 +5,71 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CharacterController))]
 public class FPController : MonoBehaviour
 {
-    [Header("References")]
+    [Header("Камера и ссылки")]
     public Transform cameraTransform;
     public Player player;
-    CharacterController cc;
 
     [Header("Input System")]
     public InputActionAsset inputActions;
     public string actionMapName = "Player";
 
-    InputAction moveAction;
-    InputAction lookAction;
-    InputAction jumpAction;
-    InputAction sprintAction;
-    InputAction crouchAction;
-    InputAction interactAction;
-    InputAction toggleNoclipAction;
-    InputAction toggleDebugAction;
-
-    [Header("Movement")]
+    [Header("Скорость передвижения")]
     public float walkSpeed = 4f;
     public float sprintSpeed = 8f;
     public float crouchSpeed = 2f;
 
+    [Header("Инерция и отзывчивость")]
     public float acceleration = 12f;
     public float deceleration = 12f;
 
-    [Header("Jump")]
+    [Header("Прыжок")]
     public float jumpHeight = 1.6f;
     public float crouchjumpHeight = 1.6f;
     public float gravity = -24f;
 
-    [Header("Ground Check (CapsuleCast)")]
+    [Header("Проверка земли (SphereCast)")]
     public LayerMask groundMask = ~0;
     public float groundCheckRadiusOffset = 0.05f;
 
-    [Header("Crouch")]
+    [Header("Приседание")]
     public float standingHeight = 1.8f;
     public float crouchHeight = 1.0f;
     public Vector3 standingCenter = new Vector3(0, -0.9f, 0);
     public Vector3 crouchCenter = new Vector3(0, -0.5f, 0);
     public float crouchSpeedLerp = 10f;
 
-    [Header("Interaction")]
+    [Header("Взаимодействие")]
     public float interactDistance = 3f;
     public float interactImpulse = 5f;
 
-    [Header("Noclip")]
+    [Header("Режим Noclip")]
     public float noclipSpeed = 10f;
     public float noclipSprintMultiplier = 2f;
-    bool noclip = false;
 
-    [Header("Debug")]
-    bool debugMode = false;
+    [Header("Внутренние данные")]
+    [SerializeField] private CharacterController cc;
+    [SerializeField] private bool noclip = false;
+    [SerializeField] private bool debugMode = false;
 
-    // internal
-    Vector3 moveVelocity;
-    Vector3 targetVelocity;
-    Vector3 verticalVelocity;
+    [SerializeField] private Vector3 moveVelocity;
+    [SerializeField] private Vector3 targetVelocity;
+    [SerializeField] private Vector3 verticalVelocity;
 
-    bool isGrounded;
-    bool isCrouching;
+    [SerializeField] private bool isGrounded;
+    [SerializeField] private bool isCrouching;
 
-    float currentHeight;
-    Vector3 currentCenter;
+    [SerializeField] private float currentHeight;
+    [SerializeField] private Vector3 currentCenter;
+
+    // Input actions (приватные — не трогаем в инспекторе)
+    private InputAction moveAction;
+    private InputAction lookAction;
+    private InputAction jumpAction;
+    private InputAction sprintAction;
+    private InputAction crouchAction;
+    private InputAction interactAction;
+    private InputAction toggleNoclipAction;
+    private InputAction toggleDebugAction;
 
     void Awake()
     {
@@ -99,7 +100,7 @@ public class FPController : MonoBehaviour
     void Update()
     {
         // ВЗАИМОДЕЙСТВИЕ
-        if (interactAction.WasPerformedThisFrame())
+        if (interactAction.WasPerformedThisFrame() || Input.GetMouseButtonDown(0))
         {
             if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hit, interactDistance))
             {
