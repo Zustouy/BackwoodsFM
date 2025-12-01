@@ -223,7 +223,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.990566, g: 0.990566, b: 0.990566, a: 0.8117647}
+      maxColor: {r: 1, g: 0.990566, b: 0.990566, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1300,7 +1300,7 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxes: 0
   ColorModule:
-    enabled: 1
+    enabled: 0
     gradient:
       serializedVersion: 2
       minMaxState: 1
@@ -1309,8 +1309,8 @@ ParticleSystem:
       maxGradient:
         serializedVersion: 2
         key0: {r: 0.9339623, g: 0.2863564, b: 0.2863564, a: 0}
-        key1: {r: 0.4056604, g: 0.0133944545, b: 0.0133944545, a: 1}
-        key2: {r: 0, g: 0, b: 0, a: 1}
+        key1: {r: 0.4056604, g: 0.0133944545, b: 0.0133944545, a: 0}
+        key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
@@ -1325,7 +1325,7 @@ ParticleSystem:
         ctime6: 0
         ctime7: 0
         atime0: 0
-        atime1: 3559
+        atime1: 6168
         atime2: 14028
         atime3: 31267
         atime4: 35455
@@ -9701,7 +9701,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6770948105359194276}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071064, y: -0, z: -0, w: 0.7071072}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 507.78534, y: 127.65, z: 357}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9847,7 +9847,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 45
+      scalar: 30
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -13551,7 +13551,7 @@ ParticleSystem:
     collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 2
     inside: 1
     outside: 0
@@ -13578,19 +13578,14 @@ ParticleSystem:
       type: 0
       properties: 2
       emitProbability: 1
-    - serializedVersion: 3
-      emitter: {fileID: 7731294898291564800}
-      type: 0
-      properties: 2
-      emitProbability: 1
   LightsModule:
     enabled: 1
     ratio: 1
     light: {fileID: 534300955302834920, guid: d4f622fcf9b01b0409d9b4e177cff21f, type: 3}
     randomDistribution: 0
     color: 0
-    range: 0
-    intensity: 0
+    range: 1
+    intensity: 1
     rangeCurve:
       serializedVersion: 2
       minMaxState: 0
@@ -13647,7 +13642,7 @@ ParticleSystem:
     intensityCurve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.6
+      scalar: 0.17
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -14612,7 +14607,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 158ff1eef5012a545a5d7bcfb0b9aea9, type: 3}
+  m_Resource: {fileID: 8300000, guid: 1560e8a7ce676eb44989613b28a8a007, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -14658,7 +14653,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.75
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -14711,6 +14706,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlareGun
   flareGun: {fileID: 6770948105359194276}
+  particle: {fileID: 0}
+  audioSource: {fileID: 0}
 --- !u!1 &8540704369031137186
 GameObject:
   m_ObjectHideFlags: 0

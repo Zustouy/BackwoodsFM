@@ -48,7 +48,8 @@ public class RadioSystem : MonoBehaviour
     [SerializeField] private float currenRadioAccuracySmooch;
     [SerializeField] private Material mat;
     [SerializeField] private Dictionary<RadioChannel, ChannelSwitchData> channelSwitchDatas = new();
-    [SerializeField] private RadioSignalSOS sosSignal;    private void Awake()
+    [SerializeField] private RadioSignalSOS sosSignal;    
+    private void Awake()
     {
         GloboalEventManager.OnStartMission += StartMission;
         foreach (var channel in channels)
