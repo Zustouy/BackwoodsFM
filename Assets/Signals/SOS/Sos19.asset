@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d180e84e5ddcc7f4fa42f90eefc8ec00, type: 3}
+  m_Name: Sos19
+  m_EditorClassIdentifier: Assembly-CSharp::RadioSignalSOS
+  id: 19
+  frequency: 148.8
+  clearRange: 0.8
+  clip: {fileID: 8300000, guid: 233f2533fd25f0b48a0f5dbdae3aee9b, type: 3}
+  isLoop: 1
+  timer: 283
+  triggersEvent: 1
+  eventName: 
