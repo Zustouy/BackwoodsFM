@@ -15,9 +15,9 @@ public class RescueMissionManager : MonoBehaviour
 
     [Header("⎯⎯⎯ Префабы и ссылки ⎯⎯⎯")]
     public GameObject prefabScream;
+    public GameObject prefabHelper;
     public GameObject prefabFlareGun;
     public Triangulator triangulator;
-    public MissionUI missionUI;
 
     [Header("⎯⎯⎯ Настройки миссии ⎯⎯⎯")]
     public float requiredLockAngleDiffDeg = 0.1f;
@@ -72,7 +72,6 @@ public class RescueMissionManager : MonoBehaviour
         missionEndTime = Time.time + missionSignal.timer;
         hasA = hasB = triangulated = false;
         lastEstimated = Vector3.zero;
-        missionUI?.ShowMissionStarted(missionSignal.timer);
         if (triangulator != null) triangulator.SetTrueTarget(targetPosition);
         OnMissionStarted?.Invoke();
         StartCoroutine(MissionTick());
@@ -90,12 +89,10 @@ public class RescueMissionManager : MonoBehaviour
                 GloboalEventManager.SendOnMissionTimeout();
                 antennaA.EndMission(targetPosition, missionActive);
                 antennaB.EndMission(targetPosition, missionActive);
-                missionUI?.ShowMissionFailed();
                 OnMissionFailed?.Invoke();
                 Debug.Log("Mission failed: timeout");
                 yield break;
             }
-            missionUI?.UpdateTimeRemaining(missionEndTime - Time.time);
             yield return null;
         }
     }
@@ -120,7 +117,6 @@ public class RescueMissionManager : MonoBehaviour
             if (!hasA)
             {
                 hasA = true;
-                missionUI?.ShowStatus("Antenna A locked. Waiting for Antenna B...");
                 Debug.Log($"Antenna A locked: az = {azimuthDeg:F1}°");
             }
             else
@@ -134,7 +130,6 @@ public class RescueMissionManager : MonoBehaviour
             if (!hasB)
             {
                 hasB = true;
-                missionUI?.ShowStatus("Antenna B locked. Triangulating...");
                 Debug.Log($"Antenna B locked: az = {azimuthDeg:F1}°");
             }
             else
@@ -151,7 +146,6 @@ public class RescueMissionManager : MonoBehaviour
         float angleDiff = Mathf.Abs(Vector3.Angle(AzimuthToDirection(measA.az), AzimuthToDirection(measB.az)));
         if (angleDiff < requiredLockAngleDiffDeg)
         {
-            missionUI?.ShowStatus($"Angles too close ({angleDiff:F1}°). Need at least {requiredLockAngleDiffDeg}°.");
             triangulated = false;
             return;
         }
@@ -163,7 +157,6 @@ public class RescueMissionManager : MonoBehaviour
 
         if (!success)
         {
-            missionUI?.ShowTriangulationFailed();
             triangulated = false;
             return;
         }
@@ -171,9 +164,8 @@ public class RescueMissionManager : MonoBehaviour
 
         lastEstimated = estimated;
         cordOut.text  = $"X = {estimated.x:000.0} Y = {estimated.z:000.0}";
-        if (!missionActive || frequencyScaning != frequency) return;
+        if (!missionActive || frequencyScaning != frequency || confidence <= 0.94f) return;
         triangulated = true;
-        missionUI?.ShowTargetLocked(estimated, confidence);
     }
 
     private Vector3 AzimuthToDirection(float azDeg)
@@ -193,8 +185,8 @@ public class RescueMissionManager : MonoBehaviour
         missionActive = false;
         antennaA.EndMission(targetPosition, missionActive);
         antennaB.EndMission(targetPosition, missionActive);
-        missionUI?.ShowMissionCompleted();
         GloboalEventManager.SendOnMissionCompleted();
+        Instantiate(prefabHelper, targetPosition + Vector3.up, Quaternion.identity);
         Debug.Log("Mission completed: call succeeded.");
         
     }

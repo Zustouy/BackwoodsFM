@@ -110,15 +110,15 @@ public class FPController : MonoBehaviour
             }
         }
 
-        if (toggleNoclipAction.WasPerformedThisFrame())
-        {
-            noclip = !noclip;
-            cc.enabled = !noclip;
-            verticalVelocity = Vector3.zero;
-        }
+        // if (toggleNoclipAction.WasPerformedThisFrame())
+        // {
+        //     noclip = !noclip;
+        //     cc.enabled = !noclip;
+        //     verticalVelocity = Vector3.zero;
+        // }
 
-        if (toggleDebugAction.WasPerformedThisFrame())
-            debugMode = !debugMode;
+        // if (toggleDebugAction.WasPerformedThisFrame())
+        //     debugMode = !debugMode;
 
         if (noclip) NoclipUpdate();
         else StandardUpdate();

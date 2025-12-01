@@ -6,6 +6,7 @@ public class MissionSarter : MonoBehaviour
 {
     [Header("⎯⎯⎯ Список SOS-сигналов ⎯⎯⎯")]
     public List<RadioSignalSOS> sosSignals;
+    private bool start;
     void Awake()
     {
         GloboalEventManager.OnMissionTimeout += StartNewMission;
@@ -13,12 +14,20 @@ public class MissionSarter : MonoBehaviour
     }
     public void StartNewMission()
     {
-        StartCoroutine(TimerToStartNewMission(Random.Range(30 , 151)));
+        StartCoroutine(TimerToStartNewMission(Random.Range(10 , 30)));
     }
     [ContextMenu("StartMission")]
     public void StartMission()
     {
         RadioSignalSOS sos = sosSignals[Random.Range(0, sosSignals.Count)];
+        GloboalEventManager.SendOnStartMission(sos.frequency, sos);
+    }
+    public void StartFirst()
+    {
+        CursorManager.HideAndLock();
+        if(start)
+            return;
+        RadioSignalSOS sos = sosSignals[0];
         GloboalEventManager.SendOnStartMission(sos.frequency, sos);
     }
     IEnumerator TimerToStartNewMission(int timer)

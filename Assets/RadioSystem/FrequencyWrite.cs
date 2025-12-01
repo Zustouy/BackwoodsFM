@@ -20,7 +20,7 @@ public class FrequencyWrite : MonoBehaviour, IAction
     }
     public void NumButton(string num)
     {
-        if (writeFrequency == null ? true : writeFrequency.Length <= 10)
+        if (writeFrequency == null ? true : writeFrequency.Length <= 5)
             wfTMP.text = writeFrequency += num;
 
     }

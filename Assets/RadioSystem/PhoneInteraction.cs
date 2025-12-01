@@ -37,7 +37,7 @@ public class PhoneInteraction : MonoBehaviour
     }
     public void NumButton(string num)
     {
-        if (number == null ? true : number.Length <= 10)
+        if (number == null ? true : number.Length <= 4)
             numScreen.text = number += num;
 
     }

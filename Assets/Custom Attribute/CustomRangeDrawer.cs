@@ -1,7 +1,25 @@
-#if UNITY_EDITOR
-using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+// Атрибут теперь виден и во время сборки
+public class CustomRangeAttribute : PropertyAttribute
+{
+    public float min1, max1, min2, max2;
+
+    public CustomRangeAttribute(float min1, float max1, float min2, float max2)
+    {
+        this.min1 = min1;
+        this.max1 = max1;
+        this.min2 = min2;
+        this.max2 = max2;
+    }
+}
+
+#if UNITY_EDITOR
+// Рисователь остаётся только для редактора
 [CustomPropertyDrawer(typeof(CustomRangeAttribute))]
 public class CustomRangeDrawer : PropertyDrawer
 {
@@ -9,10 +27,8 @@ public class CustomRangeDrawer : PropertyDrawer
     {
         EditorGUI.BeginProperty(position, label, property);
 
-        // Обычное текстовое поле
         EditorGUI.PropertyField(position, property, label);
 
-        // После ввода — жёсткая валидация
         if (property.propertyType == SerializedPropertyType.Float)
         {
             float value = property.floatValue;
@@ -23,7 +39,6 @@ public class CustomRangeDrawer : PropertyDrawer
 
             if (!inRange1 && !inRange2)
             {
-                // Принудительно ставим ближайшее валидное значение
                 float closest1 = Mathf.Clamp(value, attr.min1, attr.max1);
                 float closest2 = Mathf.Clamp(value, attr.min2, attr.max2);
                 float dist1 = Mathf.Abs(value - closest1);
@@ -34,16 +49,6 @@ public class CustomRangeDrawer : PropertyDrawer
         }
 
         EditorGUI.EndProperty();
-    }
-}
-
-public class CustomRangeAttribute : PropertyAttribute
-{
-    public float min1, max1, min2, max2;
-    public CustomRangeAttribute(float min1, float max1, float min2, float max2)
-    {
-        this.min1 = min1; this.max1 = max1;
-        this.min2 = min2; this.max2 = max2;
     }
 }
 #endif

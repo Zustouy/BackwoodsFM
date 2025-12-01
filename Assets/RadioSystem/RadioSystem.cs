@@ -29,6 +29,7 @@ public class RadioSystem : MonoBehaviour
     // public List<RadioSignalAnomaly> anomalySignals;
 
     [Header("Аудио источники")]
+    public AudioSource ambientSource;   // чистый канал
     public AudioSource channelSource;   // чистый канал
     public AudioSource sosSource;       // SOS  сигнал
     public AudioSource noiseSource;     // белый шум
@@ -36,6 +37,7 @@ public class RadioSystem : MonoBehaviour
     public AudioSource crackleSource;   // треск помех
 
     [Header("Параметры помех")]
+    public float ambientBase = 0.2f;
     public float channelBase = 0.8f;
     public float sosBase = 0.6f;
     public float noiseBase = 0.3f;
@@ -51,6 +53,8 @@ public class RadioSystem : MonoBehaviour
     [SerializeField] private RadioSignalSOS sosSignal;    
     private void Awake()
     {
+        GloboalEventManager.OnMissionCompleted += MissionEnd;
+        GloboalEventManager.OnMissionTimeout += MissionEnd;
         GloboalEventManager.OnStartMission += StartMission;
         foreach (var channel in channels)
         {
@@ -72,6 +76,14 @@ public class RadioSystem : MonoBehaviour
         mat.SetFloat("_Accuracy",0);
         Off();
     }
+
+    private void MissionEnd()
+    {
+        sosSignal = null;
+        radioAccuracy = 0;
+        sosSource.volume =0;
+    }
+
     private void StartMission(float arg1, RadioSignalSOS sos)
     {
         sosSignal = sos;
@@ -94,11 +106,13 @@ public class RadioSystem : MonoBehaviour
     {
         StopCoroutine(OnEffects());
         StartCoroutine(OffEffects());
+        isOn = false;
     }
     public void On()
     {
         StopCoroutine(OffEffects());
         StartCoroutine(OnEffects());
+        isOn = true;
     }
     void ProcessChannels()
     {
@@ -157,8 +171,9 @@ public class RadioSystem : MonoBehaviour
     void ProcessNoise()
     {
         float chvolume = channelSource.volume;
+        ambientSource.volume = ambientBase * (1 - chvolume) * gain;
         noiseSource.volume = noiseBase * (1 - chvolume) * gain;
-        fuzzSource.volume = fuzzBase * (-4f * chvolume * chvolume + 4f * chvolume)* gain;
+        fuzzSource.volume = fuzzBase * (-4f * radioAccuracy * radioAccuracy + 4f * radioAccuracy)* gain;
 
         if (Random.value < crackleChance * (1 - chvolume))
             crackleSource.Play();
